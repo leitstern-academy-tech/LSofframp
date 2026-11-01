@@ -54,3 +54,23 @@ Original to this project: issue codes, skip-and-record behaviour, the open-stand
 classification used later by the rehearsal rules.
 
 Tests: 79 passing (48 manifest, 31 reader).
+
+## 2026-11-01 (evening) - Evidence Pack and first rules
+
+Added `core/evidence.py` (Exit Evidence Pack), `rules/` (four built-in rules)
+and the `rehearse` command.
+
+Decisions (assumed from the recommendations, open to change):
+- The pack refers to the Manifest by SHA-256 only; it never copies Manifest content.
+- Rule outcomes: pass, fail, not_applicable, cannot_determine. There is no overall score
+  (ADR 0002).
+- The pack's own checksum is written to a separate `evidence.json.sha256` file in
+  `sha256sum` format. No signature in this version.
+- A rule that raises is recorded as cannot_determine; the run continues.
+
+Rules: read.complete, format.open, integrity.checksums, access.sharing_known.
+"Not stated by the package" is reported as cannot_determine, never as pass or fail.
+
+Not done yet: JSON Schema file for the Evidence Pack, process and roster rules.
+
+Tests: 115 passing.

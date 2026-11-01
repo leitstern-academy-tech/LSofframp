@@ -7,6 +7,7 @@ from lsofframp import __version__
 from lsofframp.core.manifest import ManifestError, manifest_schema_text, write_text_atomic
 from lsofframp.readers.builder import build_manifest
 from lsofframp.readers.package import read_packages
+from lsofframp.rules.builtin import build_evidence
 
 app = typer.Typer(no_args_is_help=True, add_completion=False)
 
@@ -88,3 +89,33 @@ def make_manifest(
     problems = len(reading.issues) + len(merge_issues)
     if problems:
         typer.echo(f"{problems} issue(s) found; run 'inspect' to list them.", err=True)
+
+
+@app.command()
+def rehearse(
+    packages: list[Path] = typer.Argument(
+        ..., exists=True, help="Export ZIP archives or directories (all parts of one export)."
+    ),
+    out_dir: Path = typer.Option(
+        ...,
+        "--out-dir",
+        "-o",
+        exists=True,
+        file_okay=False,
+        writable=True,
+        help="Existing folder for manifest.json and evidence.json (keep it outside the package).",
+    ),
+) -> None:
+    """Run the rehearsal rules and write the Manifest and the Exit Evidence Pack."""
+    try:
+        reading = read_packages(packages)
+        manifest, merge_issues = build_manifest(reading, __version__)
+        pack = build_evidence(manifest, [*reading.issues, *merge_issues], __version__)
+        manifest.write(out_dir / "manifest.json")
+        pack.write(out_dir / "evidence.json")
+    except ManifestError as exc:
+        typer.echo(str(exc), err=True)
+        raise typer.Exit(code=2) from exc
+    for result in pack.results:
+        typer.echo(f"[{result.status.value}] {result.rule_id}: {result.summary}")
+    typer.echo(f"Written: {out_dir / 'manifest.json'}, {out_dir / 'evidence.json'}")
