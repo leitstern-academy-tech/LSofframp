@@ -24,9 +24,10 @@ These are design decisions of this project, taken from its own requirements
 - **Skip and record.** A damaged or unsafe entry becomes a recorded issue and the run
   continues; the issues are part of the evidence.
 - **Open-standard classification** of file formats as an input to the rules.
-- **Planned, not built yet:** checks for process continuity and for a roster of people
-  (ADR 0004), which ask whether the exported data can still support what the organisation
-  does, not only whether files are present.
+- **Process and roster checks** (ADR 0004). The organisation describes in its own file what
+  it must still be able to do. Each item gets a state of its own, the process shows the least
+  favourable one together with its items, and a selector that matches nothing is reported,
+  not passed. The roster is used locally; only its hash, row count and date are recorded.
 
 ## What is standard practice
 
@@ -68,3 +69,15 @@ its schema requires a single score, which this project rejects (ADR 0002), and b
 Manifest/Evidence separation and the planned process checks would change its core. The
 decision was approved by the maintainer on 2026-11-01. It should be revisited if the
 projects converge.
+
+## Review of the process and roster stage (2026-11-01)
+
+- **Specific to this project:** the four item states and the rule that a process shows its
+  least favourable item together with the items; reporting an empty selector as unknown;
+  requiring the organisation to state the roster's date; recording only fingerprint, row
+  count and date of the roster.
+- **Standard practice:** reading CSV with the standard library, validating a JSON file with
+  pydantic models and a published schema, classifying file formats by extension.
+- **Sources and code:** no new dependency, no code or text taken from other projects.
+- **Similarity:** unchanged (medium). No new prior-art search was made at this stage; it is
+  repeated before the funding application.

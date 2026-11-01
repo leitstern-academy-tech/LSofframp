@@ -20,6 +20,11 @@ Status of each requirement is in `docs/acceptance.md`. "Planned" items are not b
 | R-12 | The Evidence Pack is written with a checksum file, and the tool can detect a changed file. |
 | R-13 | Exports split over several archives are read together; repeated files are reported, repeated folders merged. |
 | R-14 | A command line offers `inspect`, `manifest`, `rehearse`, `schema` and `version`. |
+| R-15 | A process definition is a local JSON file validated against a published schema. Unknown fields are refused; a selector names exactly one of kind, path prefix or object identifier (ADR 0004). |
+| R-16 | A member roster is a local CSV with the columns `email` and `active`; the organisation states the day it reflects. Only its SHA-256, row count and date are recorded; error messages never show cell values. An invalid row refuses the whole roster. |
+| R-17 | Each process item gets one of `usable`, `needs_conversion`, `not_usable` or `unknown` with a reason. A selector that matches nothing is `unknown`. A process shows the least favourable item state together with its items; there is no score. |
+| R-18 | Checks that need a roster report `unknown` without one. `--roster` needs `--roster-as-of` and `--process`; a date in the future or in the wrong form is refused. |
+| R-19 | The `processes` section of the Evidence Pack is optional: `null` means the check was not run, and a pack without it stays valid. |
 
 ## Non-functional
 
@@ -34,8 +39,6 @@ Status of each requirement is in `docs/acceptance.md`. "Planned" items are not b
 
 | ID | Requirement |
 | --- | --- |
-| P-01 | Process continuity: check that a process defined by the user (JSON) can still be carried out with the exported data. |
-| P-02 | Roster check: compare a list of people (CSV) with what the package says about access. |
 | P-03 | Readers for ICS, VCF and MBOX content. |
 | P-04 | Up to two provider modules that fill in sharing, ownership and relationships. |
 | P-05 | Plain-language reports in German and English. |

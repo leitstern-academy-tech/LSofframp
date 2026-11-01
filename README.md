@@ -55,8 +55,8 @@ Split exports: pass every part, for example `lsofframp rehearse part-1.zip part-
 | --- | --- |
 | `lsofframp inspect PACKAGE...` | Scan packages and list what was found and what could not be read |
 | `lsofframp manifest PACKAGE... [-o FILE]` | Write the Portability Manifest |
-| `lsofframp rehearse PACKAGE... -o DIR` | Write the Manifest and the Evidence Pack and print the rule results |
-| `lsofframp schema [--kind KIND] [-o FILE]` | Print the JSON Schema of the Manifest (default) or of the Evidence Pack (`--kind evidence`) |
+| `lsofframp rehearse PACKAGE... -o DIR [--process FILE] [--roster FILE --roster-as-of DATE]` | Write the Manifest and the Evidence Pack, print the rule results and, with `--process`, the state of each process |
+| `lsofframp schema [--kind KIND] [-o FILE]` | Print the JSON Schema of the Manifest (default), the Evidence Pack (`--kind evidence`) or a process file (`--kind process`) |
 | `lsofframp version` | Print the version |
 
 ## Current rules
@@ -68,8 +68,19 @@ Split exports: pass every part, for example `lsofframp rehearse part-1.zip part-
 | `integrity.checksums` | Does the package declare checksums, and do they match? |
 | `access.sharing_known` | Does the package say who can access each object? |
 
-Not yet implemented: process continuity and roster checks, ICS/VCF/MBOX readers, provider
-modules, plain-language reports (DE/EN), `--redact`.
+Not yet implemented: ICS/VCF/MBOX readers, provider modules, plain-language reports (DE/EN),
+`--redact`, `compare`.
+
+## Process check
+
+The organisation can describe in a small JSON file what it must still be able to do, and
+give a list of its members (CSV). Each item of a process gets a state of its own
+(`usable`, `needs_conversion`, `not_usable`, `unknown`); a selector that matches nothing is
+reported as `unknown`, never as fine. Both files stay local and the Evidence Pack records
+only the roster's hash, row count and date. See `docs/processes.md` and
+`examples/process.example.json`.
+
+    lsofframp rehearse export.zip -o out --process process.json --roster roster.csv --roster-as-of 2026-10-01
 
 ## Safety
 
@@ -84,6 +95,7 @@ See `docs/threat-model.md` for the full list.
 ## Documentation
 
 - `docs/scope.md` - what the tool is and is not
+- `docs/processes.md` - process and roster files
 - `docs/prior-art.md` - related projects and how this one differs
 - `docs/adr/` - design decisions
 - `docs/devlog.md` - development log

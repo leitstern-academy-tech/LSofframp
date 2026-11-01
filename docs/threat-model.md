@@ -110,3 +110,13 @@ Date: 2026-10-28
 
 - Which fields of the Evidence Pack are redactable.
 
+## Roster and process files
+
+- A roster holds personal data (addresses). It is read locally, limited to 20 MiB and
+  100,000 rows, and never copied: the Evidence Pack keeps its SHA-256, row count and date.
+  A hash lets someone who already holds a copy check it; it does not reveal contents.
+- Error messages name rows and columns and never print cell values.
+- A process file is validated against its schema; unknown fields and unsafe path prefixes
+  are refused. Labels and process names are written by the organisation and appear in the
+  Evidence Pack and on the terminal, so they should not contain personal data.
+- Reasons in the results never contain the address given in `requires_shared_with`.

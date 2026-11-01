@@ -74,3 +74,21 @@ Rules: read.complete, format.open, integrity.checksums, access.sharing_known.
 Not done yet: JSON Schema file for the Evidence Pack, process and roster rules.
 
 Tests: 115 passing.
+
+## Process and roster checks (2026-11-01)
+
+- Process definition file (JSON, schema 0.1) with selectors by kind, path prefix or object
+  identifier; unknown fields are refused. Decisions a, b and c of the stage proposal were
+  approved by the maintainer.
+- Roster reader (CSV, `email` and `active`, optional `name` and `role`); comma or
+  semicolon, UTF-8 with or without a byte order mark; the organisation states the as-of date;
+  an invalid row refuses the whole roster; error messages show rows and columns only.
+- Evaluation of process items against the Manifest: states `usable`, `needs_conversion`,
+  `not_usable`, `unknown`; process state is the least favourable item state; the Evidence
+  Pack gets an optional `processes` section (schema version unchanged, project unpublished).
+- `rehearse` takes `--process`, `--roster` and `--roster-as-of`.
+- Also done since the previous entry: cleaned copy artifacts from the documents, added
+  requirements, acceptance, third-party and originality documents, added tests for the
+  command line, generated and locked the JSON Schemas.
+- Open: ICS, VCF and MBOX readers; provider modules; `--redact`; `compare`; reports in
+  German and English.
