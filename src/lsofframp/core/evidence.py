@@ -5,6 +5,7 @@ There is deliberately no overall score; each rule reports on its own.
 """
 
 import json
+from collections.abc import Iterable
 from datetime import datetime, timezone
 from enum import Enum
 from pathlib import Path
@@ -23,6 +24,7 @@ from lsofframp.core.manifest import (
     sha256_ref,
     write_text_atomic,
 )
+from lsofframp.core.roster import RosterInfo
 
 EVIDENCE_SCHEMA_VERSION = "0.1"
 _CHECKSUM_SUFFIX = ".sha256"
@@ -71,6 +73,64 @@ class RuleResult(_Model):
         return sorted(set(value))
 
 
+class ItemState(str, Enum):
+    USABLE = "usable"
+    NEEDS_CONVERSION = "needs_conversion"
+    NOT_USABLE = "not_usable"
+    UNKNOWN = "unknown"
+
+
+ITEM_STATE_ORDER: tuple[ItemState, ...] = (
+    ItemState.NOT_USABLE,
+    ItemState.UNKNOWN,
+    ItemState.NEEDS_CONVERSION,
+    ItemState.USABLE,
+)
+
+
+def least_favourable(states: Iterable[ItemState]) -> ItemState:
+    """The worst of the given states; ``usable`` only when every state is usable."""
+    present = set(states)
+    return next((state for state in ITEM_STATE_ORDER if state in present), ItemState.USABLE)
+
+
+class ItemResult(_Model):
+    """State of one item of a process; ``object_ids`` lists the objects that decided it."""
+
+    label: str = Field(min_length=1)
+    state: ItemState
+    reason: str = Field(min_length=1)
+    matched: int = Field(default=0, ge=0)
+    object_ids: list[ObjectId] = Field(default_factory=list)
+
+    @field_validator("object_ids")
+    @classmethod
+    def sort_unique(cls, value: list[str]) -> list[str]:
+        return sorted(set(value))
+
+
+class ProcessResult(_Model):
+    """A process with its items; the state is the least favourable item state."""
+
+    name: str = Field(min_length=1)
+    state: ItemState
+    items: list[ItemResult] = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def state_follows_items(self) -> "ProcessResult":
+        if self.state is not least_favourable(item.state for item in self.items):
+            raise ValueError("the process state must be the least favourable item state")
+        return self
+
+
+class ProcessEvidence(_Model):
+    """Outcome of the process check; never contains roster or process file content."""
+
+    definition_sha256: Sha256Ref
+    roster: RosterInfo | None = None
+    results: list[ProcessResult] = Field(min_length=1)
+
+
 class EvidencePack(_Model):
     schema_version: Literal["0.1"] = EVIDENCE_SCHEMA_VERSION
     generated_at: datetime
@@ -78,6 +138,7 @@ class EvidencePack(_Model):
     manifest_digest: Sha256Ref
     read_issues: list[IssueRecord] = Field(default_factory=list)
     results: list[RuleResult] = Field(default_factory=list)
+    processes: ProcessEvidence | None = None
 
     @field_validator("generated_at")
     @classmethod

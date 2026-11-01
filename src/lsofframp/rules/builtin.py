@@ -3,7 +3,13 @@
 from collections.abc import Iterable, Sequence
 from datetime import datetime, timezone
 
-from lsofframp.core.evidence import EvidencePack, IssueRecord, RuleResult, RuleStatus
+from lsofframp.core.evidence import (
+    EvidencePack,
+    IssueRecord,
+    ProcessEvidence,
+    RuleResult,
+    RuleStatus,
+)
 from lsofframp.core.manifest import Manifest, ManifestObject, ObjectKind, OpenStandard, ToolInfo
 from lsofframp.readers.package import ReadIssue
 from lsofframp.rules.base import RuleContext, RuleSpec, run_rules
@@ -126,6 +132,7 @@ def build_evidence(
     tool_version: str,
     generated_at: datetime | None = None,
     rules: Sequence[RuleSpec] = BUILTIN_RULES,
+    processes: ProcessEvidence | None = None,
 ) -> EvidencePack:
     """Run the rules against ``manifest`` and record the outcome."""
     results = run_rules(RuleContext(manifest, read_issues), rules)
@@ -140,4 +147,5 @@ def build_evidence(
             for issue in read_issues
         ],
         results=results,
+        processes=processes,
     )

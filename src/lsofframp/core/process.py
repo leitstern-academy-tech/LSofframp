@@ -21,7 +21,9 @@ from lsofframp.core.manifest import (
     ManifestError,
     ObjectId,
     ObjectKind,
+    Sha256Ref,
     UnsafePathError,
+    sha256_ref,
     validate_package_path,
 )
 
@@ -100,13 +102,19 @@ class ProcessFile(_Model):
 
     @classmethod
     def load(cls, path: Path) -> "ProcessFile":
+        return cls.load_with_digest(path)[0]
+
+    @classmethod
+    def load_with_digest(cls, path: Path) -> tuple["ProcessFile", Sha256Ref]:
+        """Read the file once and return the definition with the SHA-256 of its bytes."""
         path = Path(path)
         try:
-            raw = path.read_text(encoding="utf-8-sig")
+            data = path.read_bytes()
+            raw = data.decode("utf-8-sig")
         except (OSError, UnicodeDecodeError) as exc:
             raise ProcessLoadError(f"cannot read {path.name}: {exc}") from exc
         try:
-            return cls.model_validate_json(raw)
+            return cls.model_validate_json(raw), sha256_ref(data)
         except ValidationError as exc:
             problems = "; ".join(
                 f"{'.'.join(str(part) for part in error['loc'])}: {error['msg']}"

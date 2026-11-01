@@ -10,6 +10,7 @@ from lsofframp.core.process import process_schema_text
 from lsofframp.readers.builder import build_manifest
 from lsofframp.readers.package import read_packages
 from lsofframp.rules.builtin import build_evidence
+from lsofframp.rules.processes import run_process_stage
 
 app = typer.Typer(no_args_is_help=True, add_completion=False)
 
@@ -116,12 +117,31 @@ def rehearse(
         writable=True,
         help="Existing folder for manifest.json and evidence.json (keep it outside the package).",
     ),
+    process: Optional[Path] = typer.Option(
+        None,
+        "--process",
+        exists=True,
+        dir_okay=False,
+        help="Process definition (JSON) listing what the organisation must still be able to do.",
+    ),
+    roster: Optional[Path] = typer.Option(
+        None,
+        "--roster",
+        exists=True,
+        dir_okay=False,
+        help="Member roster (CSV with the columns email and active). Needs --roster-as-of.",
+    ),
+    roster_as_of: Optional[str] = typer.Option(
+        None, "--roster-as-of", help="The day the roster reflects, written YYYY-MM-DD."
+    ),
 ) -> None:
     """Run the rehearsal rules and write the Manifest and the Exit Evidence Pack."""
     try:
         reading = read_packages(packages)
         manifest, merge_issues = build_manifest(reading, __version__)
-        pack = build_evidence(manifest, [*reading.issues, *merge_issues], __version__)
+        issues = [*reading.issues, *merge_issues]
+        processes = run_process_stage(manifest, issues, process, roster, roster_as_of)
+        pack = build_evidence(manifest, issues, __version__, processes=processes)
         manifest.write(out_dir / "manifest.json")
         pack.write(out_dir / "evidence.json")
     except ManifestError as exc:
@@ -129,4 +149,9 @@ def rehearse(
         raise typer.Exit(code=2) from exc
     for result in pack.results:
         typer.echo(f"[{result.status.value}] {result.rule_id}: {result.summary}")
+    if pack.processes is not None:
+        for outcome in pack.processes.results:
+            typer.echo(f"[process {outcome.state.value}] {outcome.name}")
+            for entry in outcome.items:
+                typer.echo(f"    [{entry.state.value}] {entry.label}: {entry.reason}")
     typer.echo(f"Written: {out_dir / 'manifest.json'}, {out_dir / 'evidence.json'}")

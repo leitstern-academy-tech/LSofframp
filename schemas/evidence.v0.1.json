@@ -39,6 +39,149 @@
       "title": "IssueRecord",
       "type": "object"
     },
+    "ItemResult": {
+      "additionalProperties": false,
+      "description": "State of one item of a process; ``object_ids`` lists the objects that decided it.",
+      "properties": {
+        "label": {
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "state": {
+          "$ref": "#/$defs/ItemState"
+        },
+        "reason": {
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        },
+        "matched": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Matched",
+          "type": "integer"
+        },
+        "object_ids": {
+          "items": {
+            "pattern": "^obj_[0-9a-f]{16}$",
+            "type": "string"
+          },
+          "title": "Object Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "label",
+        "state",
+        "reason"
+      ],
+      "title": "ItemResult",
+      "type": "object"
+    },
+    "ItemState": {
+      "enum": [
+        "usable",
+        "needs_conversion",
+        "not_usable",
+        "unknown"
+      ],
+      "title": "ItemState",
+      "type": "string"
+    },
+    "ProcessEvidence": {
+      "additionalProperties": false,
+      "description": "Outcome of the process check; never contains roster or process file content.",
+      "properties": {
+        "definition_sha256": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Definition Sha256",
+          "type": "string"
+        },
+        "roster": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/RosterInfo"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "results": {
+          "items": {
+            "$ref": "#/$defs/ProcessResult"
+          },
+          "minItems": 1,
+          "title": "Results",
+          "type": "array"
+        }
+      },
+      "required": [
+        "definition_sha256",
+        "results"
+      ],
+      "title": "ProcessEvidence",
+      "type": "object"
+    },
+    "ProcessResult": {
+      "additionalProperties": false,
+      "description": "A process with its items; the state is the least favourable item state.",
+      "properties": {
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "state": {
+          "$ref": "#/$defs/ItemState"
+        },
+        "items": {
+          "items": {
+            "$ref": "#/$defs/ItemResult"
+          },
+          "minItems": 1,
+          "title": "Items",
+          "type": "array"
+        }
+      },
+      "required": [
+        "name",
+        "state",
+        "items"
+      ],
+      "title": "ProcessResult",
+      "type": "object"
+    },
+    "RosterInfo": {
+      "additionalProperties": false,
+      "description": "What may be recorded about a roster: its fingerprint, size and date.",
+      "properties": {
+        "sha256": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "row_count": {
+          "minimum": 0,
+          "title": "Row Count",
+          "type": "integer"
+        },
+        "as_of": {
+          "format": "date",
+          "title": "As Of",
+          "type": "string"
+        }
+      },
+      "required": [
+        "sha256",
+        "row_count",
+        "as_of"
+      ],
+      "title": "RosterInfo",
+      "type": "object"
+    },
     "RuleResult": {
       "additionalProperties": false,
       "description": "Outcome of one rule; ``object_ids`` lists the objects that decided it.",
@@ -145,6 +288,17 @@
       },
       "title": "Results",
       "type": "array"
+    },
+    "processes": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ProcessEvidence"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
     }
   },
   "required": [
