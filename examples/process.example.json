@@ -1,0 +1,32 @@
+{
+  "schema_version": "0.1",
+  "processes": [
+    {
+      "name": "Member administration",
+      "items": [
+        {
+          "label": "Member contact list",
+          "select": {"kind": "contact"}
+        },
+        {
+          "label": "Membership folder",
+          "select": {"path_prefix": "Members"},
+          "requires_shared_with": "board@example.org"
+        }
+      ]
+    },
+    {
+      "name": "Event planning",
+      "items": [
+        {
+          "label": "Event calendar",
+          "select": {"kind": "calendar_event"}
+        },
+        {
+          "label": "Event documents",
+          "select": {"path_prefix": "Events"}
+        }
+      ]
+    }
+  ]
+}

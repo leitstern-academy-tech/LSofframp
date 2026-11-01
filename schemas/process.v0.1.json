@@ -1,0 +1,141 @@
+{
+  "$defs": {
+    "ObjectKind": {
+      "enum": [
+        "file",
+        "folder",
+        "mail_message",
+        "calendar_event",
+        "contact",
+        "link"
+      ],
+      "title": "ObjectKind",
+      "type": "string"
+    },
+    "Process": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "items": {
+          "items": {
+            "$ref": "#/$defs/ProcessItem"
+          },
+          "minItems": 1,
+          "title": "Items",
+          "type": "array"
+        }
+      },
+      "required": [
+        "name",
+        "items"
+      ],
+      "title": "Process",
+      "type": "object"
+    },
+    "ProcessItem": {
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "select": {
+          "$ref": "#/$defs/Selector"
+        },
+        "requires_shared_with": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Requires Shared With"
+        }
+      },
+      "required": [
+        "label",
+        "select"
+      ],
+      "title": "ProcessItem",
+      "type": "object"
+    },
+    "Selector": {
+      "additionalProperties": false,
+      "description": "Picks objects from the Manifest by exactly one of kind, path prefix or identifier.",
+      "properties": {
+        "kind": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ObjectKind"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "path_prefix": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Path Prefix"
+        },
+        "object_id": {
+          "anyOf": [
+            {
+              "pattern": "^obj_[0-9a-f]{16}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Object Id"
+        }
+      },
+      "title": "Selector",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "0.1",
+      "default": "0.1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "processes": {
+      "items": {
+        "$ref": "#/$defs/Process"
+      },
+      "minItems": 1,
+      "title": "Processes",
+      "type": "array"
+    }
+  },
+  "required": [
+    "processes"
+  ],
+  "title": "LSofframp Process Definition",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}
