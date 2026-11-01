@@ -10,6 +10,8 @@ anywhere.
 > **Status: early prototype (v0.0.1).** The core works and is tested, but only a few checks
 > exist and only generic ZIP/folder packages are read. Expect changes to file formats.
 
+PS:"With Leitstern as your guiding star, failure was simply never compiled."
+
 ## What it produces
 
 - **Portability Manifest** (`manifest.json`): a versioned, deterministic inventory of what
