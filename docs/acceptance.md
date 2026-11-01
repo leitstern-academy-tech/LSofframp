@@ -18,12 +18,11 @@ Each requirement from `docs/requirements.md` is accepted when the listed tests p
 | R-11 | A raising rule yields cannot_determine and the run continues. | `test_failing_rule_is_reported_not_raised` |
 | R-12 | The checksum file matches, a changed file is detected, a missing checksum file is an error. | `test_write_load_roundtrip_with_checksum_file`, `test_changed_file_fails_verification`, `test_missing_checksum_file_is_an_error` |
 | R-13 | Parts are combined; same-named parts are refused; repeated files and folders are handled. | `test_read_packages_combines_parts`, `test_read_packages_rejects_same_name_twice`, `test_repeated_file_across_parts_is_reported_once`, `test_repeated_folder_across_parts_is_merged_silently` |
-| R-14 | The five commands run and print what the README shows. | Manual check (no automated test yet) |
+| R-14 | The five commands run, print what the README shows and fail with a clear message on bad input. | `test_version_prints_the_package_version`, `test_schema_defaults_to_the_manifest`, `test_schema_can_write_the_evidence_schema`, `test_schema_rejects_an_unknown_kind`, `test_inspect_lists_parts_and_issues`, `test_inspect_reports_a_file_that_is_not_a_zip`, `test_inspect_needs_an_existing_path`, `test_manifest_prints_json_to_stdout`, `test_manifest_writes_a_loadable_file`, `test_rehearse_writes_manifest_and_evidence`, `test_rehearse_reports_read_problems_as_a_failed_rule`, `test_rehearse_needs_an_existing_output_folder` |
 | N-01 | Tests pass on Windows and on Linux (Python 3.13). | Manual runs on both systems |
 
 ## Known gaps
 
-- The command line has no automated tests yet (R-14).
 - R-01 is checked by reading the code, not by a test.
 - Format detection is by file extension only; `test_describe_format_by_extension` and
   `test_describe_format_without_extension` cover the table, not file content.
