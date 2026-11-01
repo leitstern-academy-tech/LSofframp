@@ -1,4 +1,4 @@
-\# 0004: Process definitions and a member roster as optional local inputs
+# 0004: Process definitions and a member roster as optional local inputs
 
 
 
@@ -8,7 +8,7 @@ Date: 2026-11-01
 
 
 
-\## Context
+## Context
 
 
 
@@ -36,7 +36,7 @@ service would break ADR 0001.
 
 
 
-\## Decision
+## Decision
 
 
 
@@ -44,19 +44,19 @@ Two optional inputs are read from local files.
 
 
 
-\- \*\*Process definition file (JSON).\*\* Written by the organization. Each process
+- **Process definition file (JSON).** Written by the organization. Each process
 
-&#x20; has a name and a list of required items. An item is selected by object kind,
+  has a name and a list of required items. An item is selected by object kind,
 
-&#x20; path prefix or object identifier from the Manifest, and may require a
+  path prefix or object identifier from the Manifest, and may require a
 
-&#x20; relationship, for example that a folder is shared with a given group. The
+  relationship, for example that a folder is shared with a given group. The
 
-&#x20; file is validated against a versioned schema.
+  file is validated against a versioned schema.
 
-\- \*\*Member roster (CSV).\*\* Columns: `email`, `active`, and optionally `name`
+- **Member roster (CSV).** Columns: `email`, `active`, and optionally `name`
 
-&#x20; and `role`. The organization states the date the list is valid for.
+  and `role`. The organization states the date the list is valid for.
 
 
 
@@ -64,29 +64,29 @@ Rules for both:
 
 
 
-\- Read-only. No credentials. No network access.
+- Read-only. No credentials. No network access.
 
-\- The Evidence Pack records the hash, row count and as-of date, not the
+- The Evidence Pack records the hash, row count and as-of date, not the
 
-&#x20; contents. With `--redact`, addresses are replaced by hashes in all outputs.
+  contents. With `--redact`, addresses are replaced by hashes in all outputs.
 
-\- Without a roster, checks that need it are reported as `unknown`, never as
+- Without a roster, checks that need it are reported as `unknown`, never as
 
-&#x20; passed.
+  passed.
 
-\- A selector in a process file that matches nothing is reported as a finding,
+- A selector in a process file that matches nothing is reported as a finding,
 
-&#x20; not silently ignored.
+  not silently ignored.
 
-\- For each process the report lists every required item with its state. A
+- For each process the report lists every required item with its state. A
 
-&#x20; headline state is shown as well, taken as the least favourable state among
+  headline state is shown as well, taken as the least favourable state among
 
-&#x20; the items, in this order: `not\_usable`, `unknown`, `needs\_conversion`,
+  the items, in this order: `not_usable`, `unknown`, `needs_conversion`,
 
-&#x20; `usable`. `unknown` ranks above `needs\_conversion` because it cannot be
+  `usable`. `unknown` ranks above `needs_conversion` because it cannot be
 
-&#x20; relied on. The headline never appears without the list behind it.
+  relied on. The headline never appears without the list behind it.
 
 
 
@@ -102,49 +102,49 @@ guide is planned, since hand-writing JSON is hard for non-specialists.
 
 
 
-\## Consequences
+## Consequences
 
 
 
-\- Users must put in some effort. If it proves too much in user interviews, the
+- Users must put in some effort. If it proves too much in user interviews, the
 
-&#x20; format or the workflow has to change.
+  format or the workflow has to change.
 
-\- A badly defined process can give false comfort. Validation errors and
+- A badly defined process can give false comfort. Validation errors and
 
-&#x20; unmatched selectors reduce this but do not remove it.
+  unmatched selectors reduce this but do not remove it.
 
-\- The roster is personal data. It stays local, and the redaction option
+- The roster is personal data. It stays local, and the redaction option
 
-&#x20; applies to it.
+  applies to it.
 
-\- A stale roster produces wrong ownership findings. The as-of date is shown in
+- A stale roster produces wrong ownership findings. The as-of date is shown in
 
-&#x20; the report.
-
-
-
-\## Alternatives considered
+  the report.
 
 
 
-\- \*\*Infer processes automatically:\*\* would be a guess presented as a finding.
-
-&#x20; Rejected.
-
-\- \*\*Query the live directory:\*\* needs credentials and a network connection.
-
-&#x20; Rejected by ADR 0001.
-
-\- \*\*YAML or TOML for process files:\*\* friendlier to read, but YAML needs a
-
-&#x20; third-party dependency and TOML is in the standard library only from Python
-
-&#x20; 3.11. May be reconsidered if the minimum Python version changes.
+## Alternatives considered
 
 
 
-\## Notes
+- **Infer processes automatically:** would be a guess presented as a finding.
+
+  Rejected.
+
+- **Query the live directory:** needs credentials and a network connection.
+
+  Rejected by ADR 0001.
+
+- **YAML or TOML for process files:** friendlier to read, but YAML needs a
+
+  third-party dependency and TOML is in the standard library only from Python
+
+  3.11. May be reconsidered if the minimum Python version changes.
+
+
+
+## Notes
 
 
 

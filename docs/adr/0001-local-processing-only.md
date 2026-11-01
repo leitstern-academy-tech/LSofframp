@@ -1,4 +1,4 @@
-\# 0001: Process export packages locally only
+# 0001: Process export packages locally only
 
 
 
@@ -8,7 +8,7 @@ Date: 2026-10-28
 
 
 
-\## Context
+## Context
 
 
 
@@ -30,7 +30,7 @@ export package that the organization already holds on its own machine.
 
 
 
-\## Decision
+## Decision
 
 
 
@@ -44,53 +44,53 @@ server.
 
 
 
-\## Consequences
+## Consequences
 
 
 
-\- The tool never becomes a processor of the organization's personal data on
+- The tool never becomes a processor of the organization's personal data on
 
-&#x20; behalf of a third party, which keeps the privacy and security review simple.
+  behalf of a third party, which keeps the privacy and security review simple.
 
-\- Results depend on what the provider put into the export. Anything the
+- Results depend on what the provider put into the export. Anything the
 
-&#x20; provider omitted cannot be discovered through the live account. The Evidence
+  provider omitted cannot be discovered through the live account. The Evidence
 
-&#x20; Pack reports such gaps as unknowns instead of hiding them.
+  Pack reports such gaps as unknowns instead of hiding them.
 
-\- No automatic comparison against the live account is possible. The check
+- No automatic comparison against the live account is possible. The check
 
-&#x20; tests the package, not the service.
+  tests the package, not the service.
 
-\- Large packages are limited by the user's own hardware. Readers must stream
+- Large packages are limited by the user's own hardware. Readers must stream
 
-&#x20; rather than load whole archives into memory.
+  rather than load whole archives into memory.
 
-\- Dependencies must not make network calls at runtime. This has to be checked
+- Dependencies must not make network calls at runtime. This has to be checked
 
-&#x20; for every new dependency.
-
-
-
-\## Alternatives considered
+  for every new dependency.
 
 
 
-\- \*\*Live account access (OAuth or API keys):\*\* gives a fuller picture, but the
-
-&#x20; tool would hold credentials with broad access. Rejected for security and
-
-&#x20; because it changes what is being tested: the package, not the service.
-
-\- \*\*Hosted upload service:\*\* easier to use, but would make the maintainer a
-
-&#x20; recipient of sensitive data and add operational and legal obligations out of
-
-&#x20; proportion to a small open-source project. Rejected.
+## Alternatives considered
 
 
 
-\## Notes
+- **Live account access (OAuth or API keys):** gives a fuller picture, but the
+
+  tool would hold credentials with broad access. Rejected for security and
+
+  because it changes what is being tested: the package, not the service.
+
+- **Hosted upload service:** easier to use, but would make the maintainer a
+
+  recipient of sensitive data and add operational and legal obligations out of
+
+  proportion to a small open-source project. Rejected.
+
+
+
+## Notes
 
 
 

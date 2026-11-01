@@ -1,4 +1,4 @@
-\# Threat model
+# Threat model
 
 
 
@@ -8,41 +8,41 @@ Date: 2026-10-28
 
 
 
-\## What is being protected
+## What is being protected
 
 
 
-\- \*\*The contents of the export package.\*\* Mail, calendars, contacts,
+- **The contents of the export package.** Mail, calendars, contacts,
 
-&#x20; documents and permission data of the organization, often personal data.
+  documents and permission data of the organization, often personal data.
 
-\- \*\*The user's machine.\*\* LSofframp opens files it did not create.
+- **The user's machine.** LSofframp opens files it did not create.
 
-\- \*\*The integrity of the result.\*\* A finding that is wrong gives a false
+- **The integrity of the result.** A finding that is wrong gives a false
 
-&#x20; sense of safety or a false alarm.
-
-
-
-\## Trust boundaries
+  sense of safety or a false alarm.
 
 
 
-\- The export package is \*\*untrusted input\*\*. It was produced by a third party
-
-&#x20; and may be damaged, truncated or deliberately crafted.
-
-\- The user's local file system is trusted to hold the package and the
-
-&#x20; output, but LSofframp must not write outside the directories it is given.
-
-\- There is no network boundary in normal operation. LSofframp makes no network
-
-&#x20; calls (see ADR 0001).
+## Trust boundaries
 
 
 
-\## Threats and planned mitigations
+- The export package is **untrusted input**. It was produced by a third party
+
+  and may be damaged, truncated or deliberately crafted.
+
+- The user's local file system is trusted to hold the package and the
+
+  output, but LSofframp must not write outside the directories it is given.
+
+- There is no network boundary in normal operation. LSofframp makes no network
+
+  calls (see ADR 0001).
+
+
+
+## Threats and planned mitigations
 
 
 
@@ -80,33 +80,33 @@ Date: 2026-10-28
 
 
 
-\## Out of scope
+## Out of scope
 
 
 
-\- Detecting malware or deciding whether a package is safe to open in other
+- Detecting malware or deciding whether a package is safe to open in other
 
-&#x20; software.
+  software.
 
-\- A compromised user machine.
+- A compromised user machine.
 
-\- Verifying that the provider's export is authentic or complete beyond what the
+- Verifying that the provider's export is authentic or complete beyond what the
 
-&#x20; package itself lets us check.
+  package itself lets us check.
 
-\- Cryptographic signing of the Evidence Pack in the first prototype.
-
-
-
-\## Open questions
+- Cryptographic signing of the Evidence Pack in the first prototype.
 
 
 
-\- Concrete limits for entry size, total size and compression ratio.
+## Open questions
 
-\- Whether a hardened XML parser from a third party is needed or the standard
 
-&#x20; library with restricted settings is sufficient.
 
-\- Which fields of the Evidence Pack are redactable.
+- Concrete limits for entry size, total size and compression ratio.
+
+- Whether a hardened XML parser from a third party is needed or the standard
+
+  library with restricted settings is sufficient.
+
+- Which fields of the Evidence Pack are redactable.
 

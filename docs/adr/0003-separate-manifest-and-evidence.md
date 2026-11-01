@@ -1,4 +1,4 @@
-\# 0003: Keep the Manifest and the Evidence Pack as separate files
+# 0003: Keep the Manifest and the Evidence Pack as separate files
 
 
 
@@ -8,7 +8,7 @@ Date: 2026-11-01
 
 
 
-\## Context
+## Context
 
 
 
@@ -30,7 +30,7 @@ the two parts change for different reasons.
 
 
 
-\## Decision
+## Decision
 
 
 
@@ -38,19 +38,19 @@ The tool writes two files.
 
 
 
-\- \*\*Portability Manifest:\*\* the object inventory, derived only from the
+- **Portability Manifest:** the object inventory, derived only from the
 
-&#x20; package. For the same package and tool version it is deterministic apart
+  package. For the same package and tool version it is deterministic apart
 
-&#x20; from the generation header.
+  from the generation header.
 
-\- \*\*Exit Evidence Pack:\*\* the record of one run. It contains the date, tool
+- **Exit Evidence Pack:** the record of one run. It contains the date, tool
 
-&#x20; version, the SHA-256 of the Manifest it refers to, the rules applied and not
+  version, the SHA-256 of the Manifest it refers to, the rules applied and not
 
-&#x20; applied, findings, conversion needs and unknowns. It also records the hash
+  applied, findings, conversion needs and unknowns. It also records the hash
 
-&#x20; and row count of optional inputs (roster, process file), not their contents.
+  and row count of optional inputs (roster, process file), not their contents.
 
 
 
@@ -70,43 +70,43 @@ not claimed.
 
 
 
-\## Consequences
+## Consequences
 
 
 
-\- Two files must be kept together. A verify command checks that they match.
+- Two files must be kept together. A verify command checks that they match.
 
-\- Comparing two runs works per object on Manifests and per finding on Evidence
+- Comparing two runs works per object on Manifests and per finding on Evidence
 
-&#x20; Packs, so progress is visible where it happened.
+  Packs, so progress is visible where it happened.
 
-\- Redaction can be applied to each file separately. The Manifest holds paths
+- Redaction can be applied to each file separately. The Manifest holds paths
 
-&#x20; and addresses; the Evidence Pack is designed to be shareable.
+  and addresses; the Evidence Pack is designed to be shareable.
 
-\- The two schemas can evolve at different speeds and need independent
+- The two schemas can evolve at different speeds and need independent
 
-&#x20; versioning and tests.
-
-
-
-\## Alternatives considered
+  versioning and tests.
 
 
 
-\- \*\*One combined report:\*\* simpler to ship, but mixes package facts with run
-
-&#x20; results. Rejected.
-
-\- \*\*Adopting BagIt or PREMIS as the format:\*\* both are built for preservation
-
-&#x20; and transfer, not for judging reusability. Only ideas are borrowed. Rejected
-
-&#x20; as a format.
+## Alternatives considered
 
 
 
-\## Notes
+- **One combined report:** simpler to ship, but mixes package facts with run
+
+  results. Rejected.
+
+- **Adopting BagIt or PREMIS as the format:** both are built for preservation
+
+  and transfer, not for judging reusability. Only ideas are borrowed. Rejected
+
+  as a format.
+
+
+
+## Notes
 
 
 

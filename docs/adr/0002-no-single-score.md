@@ -1,4 +1,4 @@
-\# 0002: Report findings, not a single portability score
+# 0002: Report findings, not a single portability score
 
 
 
@@ -8,7 +8,7 @@ Date: 2026-10-28
 
 
 
-\## Context
+## Context
 
 
 
@@ -26,7 +26,7 @@ which findings are serious.
 
 
 
-\## Decision
+## Decision
 
 
 
@@ -46,45 +46,45 @@ covers and what it leaves out.
 
 
 
-\## Consequences
+## Consequences
 
 
 
-\- Results are longer and need more explanation than one number.
+- Results are longer and need more explanation than one number.
 
-\- Users cannot rank two providers by a single figure. This is intended.
+- Users cannot rank two providers by a single figure. This is intended.
 
-\- Re-running a rehearsal and comparing two runs is done per finding, not per
+- Re-running a rehearsal and comparing two runs is done per finding, not per
 
-&#x20; score, so progress is visible where it actually happened.
+  score, so progress is visible where it actually happened.
 
-\- "Unknown" is a first-class result and must not be folded into "pass" or
+- "Unknown" is a first-class result and must not be folded into "pass" or
 
-&#x20; "fail".
+  "fail".
 
-\- The report format needs a clear plain-language summary so that
+- The report format needs a clear plain-language summary so that
 
-&#x20; non-specialists can still act on it.
-
-
-
-\## Alternatives considered
+  non-specialists can still act on it.
 
 
 
-\- \*\*Weighted overall score:\*\* simple, but the weights would be arbitrary and
-
-&#x20; would encode judgements about what matters to every organization. Rejected.
-
-\- \*\*Traffic-light rating per data type:\*\* closer to the intended behavior but
-
-&#x20; still hides the detail. May be used as a presentation aid on top of the
-
-&#x20; findings, never as a replacement.
+## Alternatives considered
 
 
 
-\## Notes
+- **Weighted overall score:** simple, but the weights would be arbitrary and
+
+  would encode judgements about what matters to every organization. Rejected.
+
+- **Traffic-light rating per data type:** closer to the intended behavior but
+
+  still hides the detail. May be used as a presentation aid on top of the
+
+  findings, never as a replacement.
+
+
+
+## Notes
 
 
 
