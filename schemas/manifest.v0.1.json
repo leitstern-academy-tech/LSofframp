@@ -1,0 +1,652 @@
+{
+  "$defs": {
+    "Confidence": {
+      "enum": [
+        "high",
+        "medium",
+        "low",
+        "none"
+      ],
+      "title": "Confidence",
+      "type": "string"
+    },
+    "ContactInfo": {
+      "additionalProperties": false,
+      "properties": {
+        "has_email": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Has Email"
+        },
+        "has_phone": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Has Phone"
+        }
+      },
+      "title": "ContactInfo",
+      "type": "object"
+    },
+    "EventInfo": {
+      "additionalProperties": false,
+      "properties": {
+        "attendee_count": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Attendee Count"
+        },
+        "attachment_count": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Attachment Count"
+        },
+        "recurring": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Recurring"
+        }
+      },
+      "title": "EventInfo",
+      "type": "object"
+    },
+    "ExternalReference": {
+      "additionalProperties": false,
+      "description": "A target the package refers to but does not contain.",
+      "properties": {
+        "target": {
+          "minLength": 1,
+          "title": "Target",
+          "type": "string"
+        },
+        "scope": {
+          "$ref": "#/$defs/ReferenceScope",
+          "default": "unknown"
+        }
+      },
+      "required": [
+        "target"
+      ],
+      "title": "ExternalReference",
+      "type": "object"
+    },
+    "FormatInfo": {
+      "additionalProperties": false,
+      "description": "File format as seen in the package; ``mediatype`` carries no parameters.",
+      "properties": {
+        "mediatype": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9!#$&^_.+-]*/[A-Za-z0-9][A-Za-z0-9!#$&^_.+-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Mediatype"
+        },
+        "extension": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Extension"
+        },
+        "open_standard": {
+          "$ref": "#/$defs/OpenStandard",
+          "default": "unknown"
+        }
+      },
+      "title": "FormatInfo",
+      "type": "object"
+    },
+    "IntegrityInfo": {
+      "additionalProperties": false,
+      "properties": {
+        "bytes": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Bytes"
+        },
+        "hash": {
+          "anyOf": [
+            {
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Hash"
+        },
+        "declared_hash": {
+          "anyOf": [
+            {
+              "pattern": "^[a-z0-9]+:[0-9a-f]{8,128}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Declared Hash"
+        },
+        "declared_matches": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Declared Matches"
+        }
+      },
+      "title": "IntegrityInfo",
+      "type": "object"
+    },
+    "MailInfo": {
+      "additionalProperties": false,
+      "properties": {
+        "labels": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Labels"
+        },
+        "attachment_count": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Attachment Count"
+        }
+      },
+      "title": "MailInfo",
+      "type": "object"
+    },
+    "ManifestObject": {
+      "additionalProperties": false,
+      "description": "One thing found in the package.\n\n``None`` means the package does not say; an empty list means it says\nthere is nothing. The two are never merged.",
+      "properties": {
+        "id": {
+          "pattern": "^obj_[0-9a-f]{16}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/ObjectKind"
+        },
+        "part": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Part"
+        },
+        "path": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Path"
+        },
+        "source_service": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Service"
+        },
+        "original_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Original Id"
+        },
+        "format": {
+          "$ref": "#/$defs/FormatInfo"
+        },
+        "owner": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Owner"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "shared_with": {
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/ShareEntry"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Shared With"
+        },
+        "depends_on": {
+          "items": {
+            "pattern": "^obj_[0-9a-f]{16}$",
+            "type": "string"
+          },
+          "title": "Depends On",
+          "type": "array"
+        },
+        "external_references": {
+          "items": {
+            "$ref": "#/$defs/ExternalReference"
+          },
+          "title": "External References",
+          "type": "array"
+        },
+        "integrity": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/IntegrityInfo"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "unmapped_fields": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Unmapped Fields",
+          "type": "array"
+        },
+        "mail": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MailInfo"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "event": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EventInfo"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "contact": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ContactInfo"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "id",
+        "kind"
+      ],
+      "title": "ManifestObject",
+      "type": "object"
+    },
+    "ObjectKind": {
+      "enum": [
+        "file",
+        "folder",
+        "mail_message",
+        "calendar_event",
+        "contact",
+        "link"
+      ],
+      "title": "ObjectKind",
+      "type": "string"
+    },
+    "OpenStandard": {
+      "enum": [
+        "yes",
+        "no",
+        "unknown"
+      ],
+      "title": "OpenStandard",
+      "type": "string"
+    },
+    "Owner": {
+      "additionalProperties": false,
+      "properties": {
+        "principal": {
+          "minLength": 1,
+          "title": "Principal",
+          "type": "string"
+        },
+        "principal_kind": {
+          "$ref": "#/$defs/PrincipalKind",
+          "default": "unknown"
+        }
+      },
+      "required": [
+        "principal"
+      ],
+      "title": "Owner",
+      "type": "object"
+    },
+    "PackageKind": {
+      "enum": [
+        "zip",
+        "directory"
+      ],
+      "title": "PackageKind",
+      "type": "string"
+    },
+    "PackagePart": {
+      "additionalProperties": false,
+      "description": "One archive or directory of an export; split exports have several.",
+      "properties": {
+        "name": {
+          "maxLength": 255,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/PackageKind"
+        },
+        "hash": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Hash",
+          "type": "string"
+        },
+        "bytes": {
+          "minimum": 0,
+          "title": "Bytes",
+          "type": "integer"
+        },
+        "entry_count": {
+          "minimum": 0,
+          "title": "Entry Count",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "name",
+        "kind",
+        "hash",
+        "bytes",
+        "entry_count"
+      ],
+      "title": "PackagePart",
+      "type": "object"
+    },
+    "PrincipalKind": {
+      "enum": [
+        "user",
+        "group",
+        "domain",
+        "anyone_with_link",
+        "unknown"
+      ],
+      "title": "PrincipalKind",
+      "type": "string"
+    },
+    "ProviderInfo": {
+      "additionalProperties": false,
+      "description": "Detected provider. ``unknown`` is a valid and expected value.",
+      "properties": {
+        "id": {
+          "default": "unknown",
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "signals": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Signals",
+          "type": "array"
+        },
+        "confidence": {
+          "$ref": "#/$defs/Confidence",
+          "default": "none"
+        }
+      },
+      "title": "ProviderInfo",
+      "type": "object"
+    },
+    "ReferenceScope": {
+      "enum": [
+        "provider",
+        "public_web",
+        "unknown"
+      ],
+      "title": "ReferenceScope",
+      "type": "string"
+    },
+    "ShareEntry": {
+      "additionalProperties": false,
+      "properties": {
+        "principal": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Principal"
+        },
+        "principal_kind": {
+          "$ref": "#/$defs/PrincipalKind",
+          "default": "unknown"
+        },
+        "role": {
+          "$ref": "#/$defs/ShareRole",
+          "default": "unknown"
+        }
+      },
+      "title": "ShareEntry",
+      "type": "object"
+    },
+    "ShareRole": {
+      "enum": [
+        "viewer",
+        "commenter",
+        "editor",
+        "owner",
+        "unknown"
+      ],
+      "title": "ShareRole",
+      "type": "string"
+    },
+    "SourcePackage": {
+      "additionalProperties": false,
+      "properties": {
+        "parts": {
+          "items": {
+            "$ref": "#/$defs/PackagePart"
+          },
+          "minItems": 1,
+          "title": "Parts",
+          "type": "array"
+        }
+      },
+      "required": [
+        "parts"
+      ],
+      "title": "SourcePackage",
+      "type": "object"
+    },
+    "ToolInfo": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "version": {
+          "minLength": 1,
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "version"
+      ],
+      "title": "ToolInfo",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Inventory derived from the package alone, independent of any check run.",
+  "properties": {
+    "schema_version": {
+      "const": "0.1",
+      "default": "0.1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "generated_at": {
+      "format": "date-time",
+      "title": "Generated At",
+      "type": "string"
+    },
+    "tool": {
+      "$ref": "#/$defs/ToolInfo"
+    },
+    "source_package": {
+      "$ref": "#/$defs/SourcePackage"
+    },
+    "provider": {
+      "$ref": "#/$defs/ProviderInfo"
+    },
+    "objects": {
+      "items": {
+        "$ref": "#/$defs/ManifestObject"
+      },
+      "title": "Objects",
+      "type": "array"
+    }
+  },
+  "required": [
+    "generated_at",
+    "tool",
+    "source_package"
+  ],
+  "title": "LSofframp Portability Manifest",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}
