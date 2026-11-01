@@ -18,3 +18,15 @@
 
 &#x20; Visual similarity to the Unix command `lsof` acknowledged and accepted.
 
+
+
+## 2026-11-01
+- Prior-art survey added. Closest project found: ExitPreflight (MIT).
+- Compared against its report schema and architecture notes: no object-level
+  ownership or sharing, no calendar, contact or office parsing, a required
+  numeric score, no unknown state.
+- Decision: continue as an independent project with its own schema.
+- Core scope extended: process continuity check, roster check, plain-language
+  reports in German and English.
+- ADR 0003 (separate Manifest and Evidence Pack) and ADR 0004 (process and
+  roster inputs) accepted.
