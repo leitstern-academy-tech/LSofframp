@@ -12,7 +12,7 @@ Each requirement from `docs/requirements.md` is accepted when the listed tests p
 | R-05 | Same input gives identical output regardless of input order. | `test_same_input_gives_identical_manifest`, `test_output_does_not_depend_on_input_order`, `test_same_input_gives_identical_evidence`, `test_digest_changes_when_content_changes`, `test_directory_digest_ignores_walk_order`, `test_directory_digest_is_stable_and_content_sensitive` |
 | R-06 | URL secrets are removed and unknown fields (such as a mail subject) are refused. | `test_url_secrets_are_removed`, `test_external_reference_drops_query_and_rejects_empty_result`, `test_unknown_fields_are_rejected` |
 | R-07 | Unknown and empty stay distinct in the file and in the rules. | `test_null_and_empty_sharing_stay_distinct`, `test_unknown_information_stays_unknown`, `test_sharing_unknown_is_not_the_same_as_nobody` |
-| R-08 | The stored schema equals the schema generated from the models. | `test_schema_file_matches_models` |
+| R-08 | Each stored schema equals the schema generated from the models. | `test_schema_file_matches_models`, `test_evidence_schema_file_matches_models`, `test_evidence_schema_requires_manifest_digest` |
 | R-09 | The pack's manifest digest equals the SHA-256 of the written manifest file. | `test_build_evidence_binds_manifest_and_issues` |
 | R-10 | The four states are produced as specified and the pack has no score field. | `test_pack_has_no_overall_score`, `test_read_complete_passes_without_issues`, `test_read_complete_fails_and_names_touched_objects`, `test_open_formats_fails_on_closed_formats_and_lists_them`, `test_open_formats_cannot_determine_for_unclassified_files`, `test_open_formats_passes_when_everything_is_open`, `test_open_formats_without_files_is_not_applicable`, `test_checksums_cannot_be_judged_when_package_declares_none`, `test_checksums_fail_on_missing_hash_or_mismatch`, `test_checksums_pass_when_declared_hashes_match`, `test_checksums_with_uncompared_declaration_stay_undetermined` |
 | R-11 | A raising rule yields cannot_determine and the run continues. | `test_failing_rule_is_reported_not_raised` |
@@ -25,6 +25,5 @@ Each requirement from `docs/requirements.md` is accepted when the listed tests p
 
 - The command line has no automated tests yet (R-14).
 - R-01 is checked by reading the code, not by a test.
-- The Evidence Pack has no JSON Schema file yet (P-07).
 - Format detection is by file extension only; `test_describe_format_by_extension` and
   `test_describe_format_without_extension` cover the table, not file content.

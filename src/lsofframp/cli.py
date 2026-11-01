@@ -4,6 +4,7 @@ from typing import Optional
 import typer
 
 from lsofframp import __version__
+from lsofframp.core.evidence import evidence_schema_text
 from lsofframp.core.manifest import ManifestError, manifest_schema_text, write_text_atomic
 from lsofframp.readers.builder import build_manifest
 from lsofframp.readers.package import read_packages
@@ -28,9 +29,14 @@ def schema(
     output: Optional[Path] = typer.Option(
         None, "--output", "-o", help="Write the schema to this file instead of stdout."
     ),
+    kind: str = typer.Option("manifest", "--kind", "-k", help="manifest or evidence."),
 ) -> None:
-    """Print the JSON Schema of the Portability Manifest."""
-    text = manifest_schema_text()
+    """Print a JSON Schema: the Portability Manifest or the Exit Evidence Pack."""
+    builders = {"manifest": manifest_schema_text, "evidence": evidence_schema_text}
+    if kind not in builders:
+        typer.echo(f"unknown schema kind {kind!r}; use manifest or evidence", err=True)
+        raise typer.Exit(code=2)
+    text = builders[kind]()
     if output is None:
         typer.echo(text, nl=False)
         return

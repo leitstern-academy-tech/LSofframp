@@ -56,7 +56,7 @@ Split exports: pass every part, for example `lsofframp rehearse part-1.zip part-
 | `lsofframp inspect PACKAGE...` | Scan packages and list what was found and what could not be read |
 | `lsofframp manifest PACKAGE... [-o FILE]` | Write the Portability Manifest |
 | `lsofframp rehearse PACKAGE... -o DIR` | Write the Manifest and the Evidence Pack and print the rule results |
-| `lsofframp schema [-o FILE]` | Print the JSON Schema of the Manifest |
+| `lsofframp schema [--kind KIND] [-o FILE]` | Print the JSON Schema of the Manifest (default) or of the Evidence Pack (`--kind evidence`) |
 | `lsofframp version` | Print the version |
 
 ## Current rules

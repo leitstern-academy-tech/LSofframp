@@ -13,7 +13,7 @@ Status of each requirement is in `docs/acceptance.md`. "Planned" items are not b
 | R-05 | The Manifest is deterministic: the same package gives the same content in the same order. |
 | R-06 | The Manifest stores no file content, only paths, formats, sizes, hashes and addresses. URLs lose query strings and credentials. |
 | R-07 | Unknown information (`null`) is never merged with "none" (`[]`). |
-| R-08 | The Manifest follows a published, versioned JSON Schema that is kept in sync with the code. |
+| R-08 | The Manifest and the Evidence Pack follow published, versioned JSON Schemas that are kept in sync with the code. |
 | R-09 | The Evidence Pack refers to the Manifest by SHA-256 and does not copy its content (ADR 0003). |
 | R-10 | Each rule reports pass, fail, not_applicable or cannot_determine. There is no overall score (ADR 0002). |
 | R-11 | A rule that fails internally is reported as cannot_determine; the other rules still run. |
@@ -40,5 +40,4 @@ Status of each requirement is in `docs/acceptance.md`. "Planned" items are not b
 | P-04 | Up to two provider modules that fill in sharing, ownership and relationships. |
 | P-05 | Plain-language reports in German and English. |
 | P-06 | `--redact`: replace names and addresses with keyed hashes (HMAC-SHA256, key held by the user). |
-| P-07 | JSON Schema file for the Evidence Pack. |
 | P-08 | `compare`: show what changed between two runs. |

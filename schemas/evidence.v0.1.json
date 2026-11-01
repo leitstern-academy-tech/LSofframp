@@ -1,0 +1,158 @@
+{
+  "$defs": {
+    "IssueRecord": {
+      "additionalProperties": false,
+      "description": "A problem met while reading the package.",
+      "properties": {
+        "code": {
+          "minLength": 1,
+          "title": "Code",
+          "type": "string"
+        },
+        "part": {
+          "minLength": 1,
+          "title": "Part",
+          "type": "string"
+        },
+        "path": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Path"
+        },
+        "detail": {
+          "title": "Detail",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "part",
+        "detail"
+      ],
+      "title": "IssueRecord",
+      "type": "object"
+    },
+    "RuleResult": {
+      "additionalProperties": false,
+      "description": "Outcome of one rule; ``object_ids`` lists the objects that decided it.",
+      "properties": {
+        "rule_id": {
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$",
+          "title": "Rule Id",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/RuleStatus"
+        },
+        "summary": {
+          "minLength": 1,
+          "title": "Summary",
+          "type": "string"
+        },
+        "count": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Count",
+          "type": "integer"
+        },
+        "object_ids": {
+          "items": {
+            "pattern": "^obj_[0-9a-f]{16}$",
+            "type": "string"
+          },
+          "title": "Object Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "rule_id",
+        "status",
+        "summary"
+      ],
+      "title": "RuleResult",
+      "type": "object"
+    },
+    "RuleStatus": {
+      "enum": [
+        "pass",
+        "fail",
+        "not_applicable",
+        "cannot_determine"
+      ],
+      "title": "RuleStatus",
+      "type": "string"
+    },
+    "ToolInfo": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "version": {
+          "minLength": 1,
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "version"
+      ],
+      "title": "ToolInfo",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "0.1",
+      "default": "0.1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "generated_at": {
+      "format": "date-time",
+      "title": "Generated At",
+      "type": "string"
+    },
+    "tool": {
+      "$ref": "#/$defs/ToolInfo"
+    },
+    "manifest_digest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Manifest Digest",
+      "type": "string"
+    },
+    "read_issues": {
+      "items": {
+        "$ref": "#/$defs/IssueRecord"
+      },
+      "title": "Read Issues",
+      "type": "array"
+    },
+    "results": {
+      "items": {
+        "$ref": "#/$defs/RuleResult"
+      },
+      "title": "Results",
+      "type": "array"
+    }
+  },
+  "required": [
+    "generated_at",
+    "tool",
+    "manifest_digest"
+  ],
+  "title": "LSofframp Exit Evidence Pack",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

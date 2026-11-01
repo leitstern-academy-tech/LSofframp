@@ -4,6 +4,7 @@ The pack refers to the Manifest by its SHA-256 and never copies its content.
 There is deliberately no overall score; each rule reports on its own.
 """
 
+import json
 from datetime import datetime, timezone
 from enum import Enum
 from pathlib import Path
@@ -12,6 +13,7 @@ from typing import Literal
 from pydantic import BaseModel, ConfigDict, Field, ValidationError, field_validator, model_validator
 
 from lsofframp.core.manifest import (
+    SCHEMA_DIALECT,
     ChecksumError,
     ManifestError,
     ObjectId,
@@ -146,3 +148,14 @@ def verify_checksum(path: Path) -> bool:
     except ChecksumError as exc:
         raise EvidenceLoadError(str(exc)) from exc
     return actual == f"sha256:{recorded}"
+
+
+def evidence_schema() -> dict:
+    schema = EvidencePack.model_json_schema()
+    schema["$schema"] = SCHEMA_DIALECT
+    schema["title"] = "LSofframp Exit Evidence Pack"
+    return schema
+
+
+def evidence_schema_text() -> str:
+    return json.dumps(evidence_schema(), indent=2) + "\n"
