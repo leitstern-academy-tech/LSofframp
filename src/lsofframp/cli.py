@@ -5,6 +5,7 @@ import typer
 
 from lsofframp import __version__
 from lsofframp.core.manifest import ManifestError, manifest_schema_text, write_text_atomic
+from lsofframp.readers.package import read_packages
 
 app = typer.Typer(no_args_is_help=True, add_completion=False)
 
@@ -36,3 +37,28 @@ def schema(
     except ManifestError as exc:
         typer.echo(str(exc), err=True)
         raise typer.Exit(code=2) from exc
+
+
+@app.command()
+def inspect(
+    packages: list[Path] = typer.Argument(
+        ..., exists=True, help="Export ZIP archives or directories (all parts of one export)."
+    ),
+) -> None:
+    """Scan export packages locally and list what was found and what could not be read."""
+    try:
+        reading = read_packages(packages)
+    except ManifestError as exc:
+        typer.echo(str(exc), err=True)
+        raise typer.Exit(code=2) from exc
+    for scan in reading.scans:
+        part = scan.part
+        typer.echo(
+            f"{part.name}: {part.kind.value}, {part.entry_count} entries, "
+            f"{part.bytes} bytes, {part.hash}"
+        )
+    issues = reading.issues
+    typer.echo(f"Issues: {len(issues)}")
+    for issue in issues:
+        location = issue.path or "-"
+        typer.echo(f"  [{issue.code.value}] {issue.part}: {location} - {issue.detail}")
